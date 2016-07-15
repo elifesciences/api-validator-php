@@ -1,0 +1,4 @@
+suites:
+    api-validator:
+        namespace: eLife\ApiValidator
+        psr4_prefix: eLife\ApiValidator
