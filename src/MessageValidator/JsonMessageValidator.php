@@ -25,9 +25,9 @@ final class JsonMessageValidator implements MessageValidator
 
     public function validate(MessageInterface $message)
     {
-        if (empty($body = $message->getBody()->__toString()) && $message->hasHeader('Content-Type')) {
+        if (empty($body = $message->getBody()->__toString()) && !empty($message->getHeaderLine('Content-Type'))) {
             throw new InvalidMessage('Message has a Content-Type header but no body');
-        } elseif (!empty($body = $message->getBody()->__toString()) && !$message->hasHeader('Content-Type')) {
+        } elseif (!empty($body = $message->getBody()->__toString()) && empty($message->hasHeader('Content-Type'))) {
             throw new InvalidMessage('Message has a body but no Content-Type header');
         }
 
