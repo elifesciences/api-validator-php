@@ -3,8 +3,8 @@
 namespace eLife\ApiValidator;
 
 use Assert\Assertion;
-use function GuzzleHttp\Psr7\parse_header;
 use InvalidArgumentException;
+use function GuzzleHttp\Psr7\parse_header;
 
 final class MediaType
 {
