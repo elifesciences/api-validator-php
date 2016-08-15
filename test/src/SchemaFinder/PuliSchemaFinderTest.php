@@ -73,12 +73,12 @@ final class PuliSchemaFinderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_finds_the_versionless_error_schema()
+    public function it_finds_the_error_schema()
     {
         $mediaType = MediaType::fromString('application/problem+json');
 
         $finder = new PuliSchemaFinder($this->resourceRepository);
 
-        $this->assertSame(__DIR__.'/../../resources/error.json', $finder->findSchemaFor($mediaType));
+        $this->assertSame(__DIR__.'/../../resources/error.v1.json', $finder->findSchemaFor($mediaType));
     }
 }
