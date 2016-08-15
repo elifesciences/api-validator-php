@@ -21,7 +21,7 @@ final class PuliSchemaFinder implements SchemaFinder
     public function findSchemaFor(MediaType $mediaType) : string
     {
         if ('application/problem+json' === $mediaType->getType()) {
-            return $this->getResourcePath($mediaType, '/elife/api/model/error.json');
+            return $this->getResourcePath($mediaType, '/elife/api/model/error.v1.json');
         }
 
         if (
