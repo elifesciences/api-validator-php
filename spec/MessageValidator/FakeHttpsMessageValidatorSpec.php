@@ -1,0 +1,68 @@
+<?php
+
+namespace spec\eLife\ApiValidator\MessageValidator;
+
+use eLife\ApiValidator\MessageValidator;
+use GuzzleHttp\Psr7\Response;
+use function GuzzleHttp\Psr7\str;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Psr\Http\Message\MessageInterface;
+use Webmozart\Json\JsonDecoder;
+
+final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
+{
+    private $messageValidator;
+    private $jsonDecoder;
+
+    public function let(MessageValidator $messageValidator)
+    {
+        $this->messageValidator = $messageValidator;
+        $this->jsonDecoder = new JsonDecoder();
+
+        $this->beConstructedWith($messageValidator, $this->jsonDecoder);
+    }
+
+    public function it_is_a_message_validator()
+    {
+        $this->shouldImplement(MessageValidator::class);
+    }
+
+    public function it_should_rewrite_json()
+    {
+        $request = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            json_encode(['foo' => 'http://www.example.com/'])
+        );
+
+        $this->messageValidator->validate(Argument::that(function (MessageInterface $message) {
+            return str($message) === str(new Response(
+                200,
+                ['Content-Type' => 'application/json'],
+                json_encode(['foo' => 'https://www.example.com/'])
+            ));
+        }))->shouldBeCalled();
+
+        $this->validate($request);
+    }
+
+    public function it_should_not_touch_non_json()
+    {
+        $request = new Response(
+            200,
+            ['Content-Type' => 'text/plain'],
+            'foo http://www.example.com/'
+        );
+
+        $this->messageValidator->validate(Argument::that(function (MessageInterface $message) {
+            return str($message) === str(new Response(
+                200,
+                ['Content-Type' => 'text/plain'],
+                'foo http://www.example.com/'
+            ));
+        }))->shouldBeCalled();
+
+        $this->validate($request);
+    }
+}
