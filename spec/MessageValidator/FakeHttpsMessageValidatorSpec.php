@@ -33,14 +33,14 @@ final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
         $request = new Response(
             200,
             ['Content-Type' => 'application/json'],
-            json_encode(['foo' => 'http://www.example.com/'])
+            json_encode(['foo' => 'http://www.example.com/', 'bar' => 'baz http://www.example.com/'])
         );
 
         $this->messageValidator->validate(Argument::that(function (MessageInterface $message) {
             return str($message) === str(new Response(
                 200,
                 ['Content-Type' => 'application/json'],
-                json_encode(['foo' => 'https://www.example.com/'])
+                json_encode(['foo' => 'https://www.example.com/', 'bar' => 'baz http://www.example.com/'])
             ));
         }))->shouldBeCalled();
 

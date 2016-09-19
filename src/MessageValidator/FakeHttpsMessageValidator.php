@@ -28,7 +28,7 @@ final class FakeHttpsMessageValidator implements MessageValidator
     {
         try {
             $this->jsonDecoder->decode($message->getBody());
-            $message = $message->withBody(stream_for(str_replace('http:\/\/', 'https:\/\/', $message->getBody())));
+            $message = $message->withBody(stream_for(str_replace('"http:', '"https:', $message->getBody())));
         } catch (Exception $e) {
             // Do nothing.
         }
