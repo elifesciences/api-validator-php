@@ -7,23 +7,23 @@ use eLife\ApiValidator\MediaType;
 use eLife\ApiValidator\MessageValidator;
 use eLife\ApiValidator\SchemaFinder;
 use GuzzleHttp\Psr7\Response;
+use JsonSchema\Validator;
 use PhpSpec\ObjectBehavior;
-use Webmozart\Json\JsonDecoder;
 
 final class JsonMessageValidatorSpec extends ObjectBehavior
 {
     private $schemaFinder;
-    private $jsonDecoder;
+    private $validator;
 
     public function let(SchemaFinder $schemaFinder)
     {
         $this->schemaFinder = $schemaFinder;
-        $this->jsonDecoder = new JsonDecoder();
+        $this->validator = new Validator();
 
         $this->schemaFinder->findSchemaFor(MediaType::fromString('application/vnd.elife.person+json; version=1'))
             ->willReturn(__DIR__.'/../../test/resources/person.v1.json');
 
-        $this->beConstructedWith($schemaFinder, $this->jsonDecoder);
+        $this->beConstructedWith($schemaFinder, $this->validator);
     }
 
     public function it_is_a_message_validator()

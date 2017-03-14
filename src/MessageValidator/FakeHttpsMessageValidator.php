@@ -3,9 +3,7 @@
 namespace eLife\ApiValidator\MessageValidator;
 
 use eLife\ApiValidator\MessageValidator;
-use Exception;
 use Psr\Http\Message\MessageInterface;
-use Webmozart\Json\JsonDecoder;
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
@@ -16,21 +14,18 @@ use function GuzzleHttp\Psr7\stream_for;
 final class FakeHttpsMessageValidator implements MessageValidator
 {
     private $messageValidator;
-    private $jsonDecoder;
 
-    public function __construct(MessageValidator $messageValidator, JsonDecoder $jsonDecoder)
+    public function __construct(MessageValidator $messageValidator)
     {
         $this->messageValidator = $messageValidator;
-        $this->jsonDecoder = $jsonDecoder;
     }
 
     public function validate(MessageInterface $message)
     {
-        try {
-            $this->jsonDecoder->decode($message->getBody());
+        json_decode($message->getBody());
+
+        if (JSON_ERROR_NONE === json_last_error()) {
             $message = $message->withBody(stream_for(str_replace('"http:', '"https:', $message->getBody())));
-        } catch (Exception $e) {
-            // Do nothing.
         }
 
         $this->messageValidator->validate($message);

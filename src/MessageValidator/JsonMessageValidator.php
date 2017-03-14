@@ -7,20 +7,18 @@ use eLife\ApiValidator\MediaType;
 use eLife\ApiValidator\MessageValidator;
 use eLife\ApiValidator\SchemaFinder;
 use InvalidArgumentException;
+use JsonSchema\Validator;
 use Psr\Http\Message\MessageInterface;
-use Webmozart\Json\DecodingFailedException;
-use Webmozart\Json\JsonDecoder;
-use Webmozart\Json\ValidationFailedException;
 
 final class JsonMessageValidator implements MessageValidator
 {
     private $schemaFinder;
-    private $jsonDecoder;
+    private $validator;
 
-    public function __construct(SchemaFinder $schemaFinder, JsonDecoder $jsonDecoder)
+    public function __construct(SchemaFinder $schemaFinder, Validator $validator)
     {
         $this->schemaFinder = $schemaFinder;
-        $this->jsonDecoder = $jsonDecoder;
+        $this->validator = $validator;
     }
 
     public function validate(MessageInterface $message)
@@ -47,12 +45,20 @@ final class JsonMessageValidator implements MessageValidator
 
         $schema = $this->schemaFinder->findSchemaFor($mediaType);
 
-        try {
-            $this->jsonDecoder->decode($message->getBody(), $schema);
-        } catch (DecodingFailedException $e) {
-            throw new InvalidMessage($e->getMessage(), $e);
-        } catch (ValidationFailedException $e) {
-            throw new InvalidMessage($e->getMessage(), $e);
+        $this->validator->reset();
+        $this->validator->check(json_decode($message->getBody()), (object) ['$ref' => 'file://'.realpath($schema)]);
+
+        if (!$this->validator->isValid()) {
+            $message = "JSON does not validate. Violations:\n";
+            foreach ($this->validator->getErrors() as $error) {
+                $message .= sprintf("[%s] %s\n", $error['property'], $error['message']);
+            }
+
+            $this->validator->reset();
+
+            throw new InvalidMessage($message);
         }
+
+        $this->validator->reset();
     }
 }

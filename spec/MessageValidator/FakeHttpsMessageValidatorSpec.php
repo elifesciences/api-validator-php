@@ -7,20 +7,17 @@ use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Http\Message\MessageInterface;
-use Webmozart\Json\JsonDecoder;
 use function GuzzleHttp\Psr7\str;
 
 final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
 {
     private $messageValidator;
-    private $jsonDecoder;
 
     public function let(MessageValidator $messageValidator)
     {
         $this->messageValidator = $messageValidator;
-        $this->jsonDecoder = new JsonDecoder();
 
-        $this->beConstructedWith($messageValidator, $this->jsonDecoder);
+        $this->beConstructedWith($messageValidator);
     }
 
     public function it_is_a_message_validator()
