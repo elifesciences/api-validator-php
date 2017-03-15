@@ -9,7 +9,6 @@ Dependencies
 ------------
 
 * [Composer](https://getcomposer.org/)
-* [Puli CLI](http://puli.io)
 * PHP 7
 
 Installation
@@ -24,10 +23,10 @@ To validate a message:
 
 ```php
 use eLife\ApiValidator\MessageValidator\JsonMessageValidator;
-use eLife\ApiValidator\SchemaFinder\PuliSchemaFinder;
-use Webmozart\Json\JsonDecoder;
+use eLife\ApiValidator\SchemaFinder\PathBasedSchemaFinder;
+use JsonSchema\Validator;
 
-$messageValidator = new JsonMessageValidator(new PuliSchemaFinder($resourceRepository), new JsonDecoder());
+$messageValidator = new JsonMessageValidator(new PathBasedSchemaFinder('/path/to/api/schemas'), new Validator());
 
 $messageValidator->validate($message);
 ```

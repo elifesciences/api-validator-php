@@ -4,41 +4,28 @@ namespace test\eLife\ApiValidator\MessageValidator;
 
 use eLife\ApiValidator\Exception\InvalidMessage;
 use eLife\ApiValidator\MessageValidator\JsonMessageValidator;
-use eLife\ApiValidator\SchemaFinder;
-use eLife\ApiValidator\SchemaFinder\PuliSchemaFinder;
+use eLife\ApiValidator\SchemaFinder\PathBasedSchemaFinder;
 use GuzzleHttp\Psr7\Response;
+use JsonSchema\Validator;
 use PHPUnit_Framework_TestCase;
 use Psr\Http\Message\MessageInterface;
-use Puli\Repository\InMemoryRepository;
-use Puli\Repository\Resource\DirectoryResource;
-use Webmozart\Json\JsonDecoder;
 
 final class JsonMessageValidatorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var SchemaFinder
+     * @var JsonMessageValidator
      */
-    private $schemaFinder;
-
-    /**
-     * @var JsonDecoder
-     */
-    private $jsonDecoder;
+    private $messageValidator;
 
     /**
      * @before
      */
-    public function createSchemaFinder()
+    public function createMessageValidator()
     {
-        $resourceRepository = new InMemoryRepository();
-
-        $resourceRepository->add(
-            '/elife/api/model',
-            new DirectoryResource(__DIR__.'/../../resources')
+        $this->messageValidator = new JsonMessageValidator(
+            new PathBasedSchemaFinder(__DIR__.'/../../resources/'),
+            new Validator()
         );
-
-        $this->schemaFinder = new PuliSchemaFinder($resourceRepository);
-        $this->jsonDecoder = new JsonDecoder();
     }
 
     /**
@@ -47,11 +34,9 @@ final class JsonMessageValidatorTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_fail_on_an_invalid_json_message(MessageInterface $message)
     {
-        $messageValidator = new JsonMessageValidator($this->schemaFinder, $this->jsonDecoder);
-
         $this->expectException(InvalidMessage::class);
 
-        $messageValidator->validate($message);
+        $this->messageValidator->validate($message);
     }
 
     public function invalidJsonMessageProvider()
