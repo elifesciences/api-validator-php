@@ -39,7 +39,7 @@ final class JsonMessageValidator implements MessageValidator
             throw new InvalidMessage('Message has invalid Content-Type header', $e);
         }
 
-        if (false === $mediaType->matchesType('~application\/([a-z-\.]*\+)?json~')) {
+        if (false === $mediaType->matchesType('~application\/([a-z-\.]*\+)json~')) {
             return;
         }
 

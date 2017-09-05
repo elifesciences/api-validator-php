@@ -63,4 +63,15 @@ final class JsonMessageValidatorSpec extends ObjectBehavior
 
         $this->validate($request);
     }
+
+    public function it_ignores_plain_json_messages()
+    {
+        $request = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            'foo'
+        );
+
+        $this->validate($request);
+    }
 }
