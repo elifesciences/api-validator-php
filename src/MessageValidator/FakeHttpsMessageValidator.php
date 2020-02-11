@@ -3,8 +3,8 @@
 namespace eLife\ApiValidator\MessageValidator;
 
 use eLife\ApiValidator\MessageValidator;
-use Psr\Http\Message\MessageInterface;
 use function GuzzleHttp\Psr7\stream_for;
+use Psr\Http\Message\MessageInterface;
 
 /**
  * The eLife API expects assets to be served over HTTPS. When testing this
