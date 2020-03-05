@@ -4,10 +4,10 @@ namespace spec\eLife\ApiValidator\MessageValidator;
 
 use eLife\ApiValidator\MessageValidator;
 use GuzzleHttp\Psr7\Response;
+use function GuzzleHttp\Psr7\str;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Http\Message\MessageInterface;
-use function GuzzleHttp\Psr7\str;
 
 final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
 {
