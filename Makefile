@@ -22,5 +22,9 @@ test-8.1:
 	@$(MAKE) PHP_VERSION=8.1 test
 test-8.2:
 	@$(MAKE) PHP_VERSION=8.2 test
+test-8.3:
+	@$(MAKE) PHP_VERSION=8.3 test
 
-test-all: test-7.1 test-7.2 test-7.3 test-7.4 test-8.0 test-8.1 test-8.2
+test-all: test-7.1 test-7.2 test-7.3 test-7.4 test-8.0 test-8.1 test-8.2 test-8.3
+
+test-all-supported: test-7.1 test-7.2 test-7.3 test-7.4
