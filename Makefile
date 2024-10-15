@@ -4,11 +4,11 @@ build:
 	docker buildx build --build-arg=PHP_VERSION=$(PHP_VERSION) -t php-composer:$(PHP_VERSION) .
 
 lint: build
-	docker run --rm -it -v ./:/code -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && vendor/bin/phpcs --standard=phpcs.xml.dist --warning-severity=0 -p spec/ src/ test/'
+	docker run --rm -v ./:/code -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && vendor/bin/phpcs --standard=phpcs.xml.dist --warning-severity=0 -p spec/ src/ test/'
 
 
 test: build lint
-	docker run --rm -it -v ./:/code -e dependencies=highest -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && vendor/bin/phpcs --standard=phpcs.xml.dist --warning-severity=0 -p spec/ src/ test/'
+	docker run --rm -v ./:/code -e dependencies=highest -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && vendor/bin/phpcs --standard=phpcs.xml.dist --warning-severity=0 -p spec/ src/ test/'
 
 
 test-7.1:
