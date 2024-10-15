@@ -1,6 +1,6 @@
-
 .PHONY: build test clean test
 build:
+	$(if $(PHP_VERSION),,$(error PHP_VERSION make variable needs to be set))
 	docker buildx build --build-arg=PHP_VERSION=$(PHP_VERSION) -t php-composer:$(PHP_VERSION) .
 
 lint: build
