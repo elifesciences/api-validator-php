@@ -7,10 +7,10 @@ use eLife\ApiValidator\MessageValidator\JsonMessageValidator;
 use eLife\ApiValidator\SchemaFinder\PathBasedSchemaFinder;
 use GuzzleHttp\Psr7\Response;
 use JsonSchema\Validator;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 
-final class JsonMessageValidatorTest extends PHPUnit_Framework_TestCase
+final class JsonMessageValidatorTest extends TestCase
 {
     /**
      * @var JsonMessageValidator
