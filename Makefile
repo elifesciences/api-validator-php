@@ -6,11 +6,10 @@ build:
 lint: build
 	docker run --rm -v ./:/code -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && vendor/bin/phpcs --standard=phpcs.xml.dist --warning-severity=0 -p spec/ src/ test/'
 
-
 test: build lint
 	docker run --rm -v ./:/code -e dependencies=highest -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && composer update && ./project_tests.sh'
 
-test-lowest:
+test-lowest: build lint
 	docker run --rm -v ./:/code -e dependencies=lowest -v/code/vendor php-composer:$(PHP_VERSION) bash -c 'cd /code && ./project_tests.sh'
 
 
