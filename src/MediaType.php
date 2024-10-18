@@ -3,7 +3,7 @@
 namespace eLife\ApiValidator;
 
 use Assert\Assertion;
-use function GuzzleHttp\Psr7\parse_header;
+use GuzzleHttp\Psr7\Header;
 use InvalidArgumentException;
 
 final class MediaType
@@ -33,7 +33,7 @@ final class MediaType
     {
         Assertion::notBlank($header);
 
-        $contentType = parse_header($header)[0];
+        $contentType = Header::parse($header)[0];
 
         return new self(array_shift($contentType), $contentType);
     }

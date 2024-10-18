@@ -5,9 +5,9 @@ namespace test\eLife\ApiValidator\SchemaFinder;
 use eLife\ApiValidator\Exception\SchemaNotFound;
 use eLife\ApiValidator\MediaType;
 use eLife\ApiValidator\SchemaFinder\PathBasedSchemaFinder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class PathBasedSchemaFinderTest extends PHPUnit_Framework_TestCase
+final class PathBasedSchemaFinderTest extends TestCase
 {
     /**
      * @var PathBasedSchemaFinder
