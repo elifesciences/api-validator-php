@@ -3,8 +3,8 @@
 namespace spec\eLife\ApiValidator\MessageValidator;
 
 use eLife\ApiValidator\MessageValidator;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Response;
-use function GuzzleHttp\Psr7\str;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Http\Message\MessageInterface;
@@ -34,7 +34,7 @@ final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
         );
 
         $this->messageValidator->validate(Argument::that(function (MessageInterface $message) {
-            return str($message) === str(new Response(
+            return Message::toString($message) === Message::toString(new Response(
                 200,
                 ['Content-Type' => 'application/json'],
                 json_encode(['foo' => 'https://www.example.com/', 'bar' => 'baz http://www.example.com/'])
@@ -53,7 +53,7 @@ final class FakeHttpsMessageValidatorSpec extends ObjectBehavior
         );
 
         $this->messageValidator->validate(Argument::that(function (MessageInterface $message) {
-            return str($message) === str(new Response(
+            return Message::toString($message) === Message::toString(new Response(
                 200,
                 ['Content-Type' => 'text/plain'],
                 'foo http://www.example.com/'
