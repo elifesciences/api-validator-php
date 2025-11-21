@@ -3,5 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "assigneesFromCodeOwners": true
+  "assigneesFromCodeOwners": true,
+  "assignees": []
 }
